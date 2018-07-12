@@ -1,0 +1,74 @@
+import java.util.*;
+
+public class d {
+	static class Node {
+		ArrayList<Edge> edges = new ArrayList<>();
+		public void addEdge(Edge e) {
+			edges.add(e);
+		}
+
+	}
+	static class Edge {
+		int to;
+		int cost;
+		public Edge(int to, int cost) {
+			this.to = to;
+			this.cost = cost;
+		}
+
+	}
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		int M = sc.nextInt();
+		int T = sc.nextInt();
+		Node[] nodes = new Node[N*2];
+		for(int i=0; i<N*2; i++)
+			nodes[i] = new Node();
+
+		int[] gain = new int[N];
+		for(int i=0; i<N; i++)
+			gain[i] = sc.nextInt();
+
+		for(int i=0; i<M; i++) {
+			int a = sc.nextInt()-1;
+			int b = sc.nextInt()-1;
+			int c = sc.nextInt();
+
+			nodes[a].addEdge(new Edge(b, c));
+			nodes[b+N].addEdge(new Edge(a+N, c));
+		}
+
+		long[] time = new long[N*2];
+		final long MAX = 1000000000000000l;
+		Arrays.fill(time, MAX);
+
+		PriorityQueue<Long> q = new PriorityQueue<>();
+		q.add(0l);
+		q.add((long)N);
+		while(q.size()>0) {
+      System.out.println("-------");
+			long cur = q.poll();
+      System.out.println(cur);
+			long past = cur/(N*2);
+      System.out.println(past);
+			int city = (int)(cur%(N*2));
+			if(time[city]<MAX)
+				continue;
+			time[city] = past;
+			for(Edge e : nodes[city].edges) {
+				if(time[e.to]==MAX)
+					q.add((past+e.cost)*N*2 + e.to);
+			}
+		}
+
+		long max = 0;
+		for(int i=0; i<N; i++)
+			if(time[i]<MAX && time[i+N]<MAX)
+				max = Math.max(max, Math.max(0, T-time[i]-time[i+N])*gain[i]);
+
+		System.out.println(max);
+
+		sc.close();
+	}
+}
