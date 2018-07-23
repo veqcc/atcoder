@@ -1,47 +1,44 @@
 import java.util.*;
 
+class Demand implements Comparable {
+    int from;
+    int to;
+
+    public int compareTo(Object other) {
+        Demand otherDemand = (Demand) other;
+        return to - otherDemand.to;
+    }
+}
+
 public class d {
-  public static void main(String args[]) {
-    Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    int n = sc.nextInt();
-    int m = sc.nextInt();
-    int[] start = new int[n];
-    int[] end = new int[n];
+        int n = sc.nextInt();
+        int m = sc.nextInt();
 
-    for (int i=0; i < m; i++) {
-      int a = sc.nextInt();
-      int b = sc.nextInt();
+        Demand[] demands = new Demand[m];
 
-      start[a-1] += 1;
-      end[b-1] += 1;
-    }
-
-    int ans = 0;
-    int flag = 1;
-    int tmp_count = 0;
-
-    for (int i=0; i < n; i ++) {
-      if (flag == 1) {
-        if (start[i] > 0) {
-          flag = -1;
-          tmp_count = start[i];
+        for (int i = 0; i < m; i++) {
+            Demand demand = new Demand();
+            demand.from = sc.nextInt();
+            demand.to = sc.nextInt();
+            demands[i] = demand;
         }
-      } else if (flag == -1) {
-        if (end[i] > 0) {
-          tmp_count -= end[i];
-          ans++;
-          if (tmp_count == 0) {
-            if (start[i] == 0) {
-              flag = 1;
-            } else {
-              tmp_count = start[i];
+
+        Arrays.sort(demands);
+
+        int ans = 0;
+        int lastBridge = -1;
+
+        for (int i = 0; i < m; i++) {
+            if (demands[i].from > lastBridge) {
+                lastBridge = demands[i].to - 1;
+                ans++;
             }
-          }
         }
-      }
+
+        System.out.println(ans);
     }
 
-    System.out.println(ans);
-  }
 }
