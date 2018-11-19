@@ -52,3 +52,18 @@ int main2() {
     ll nCk = combination(k);
 }
 
+vector < pair<int,int> > vec;
+bool sortbysec(const pair<int,int> &a, const pair<int,int> &b) {
+    return (a.second < b.second);
+}
+int main3() {
+    for (int i = 0; i < n; i++) {
+        vec.push_back(make_pair(i, i+1));
+    }
+    // sort by first element asc
+    sort(vec.begin(), vec.end());
+    // sort desc ?
+    sort(vec.begin(), vec.end(), greater<int>());
+    // sort by second element asc by user defined function
+    sort(vect.begin(), vect.end(), sortbysec);
+}
