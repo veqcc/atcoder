@@ -14,7 +14,9 @@ int main() {
 }
 
 
-// dfs sample
+// N×Nの隣接行列を作れないときは、
+//   vector <int> vec[100005];
+// などでNodeごとのvectorを作れば計算が間に合う。
 void dfs(int v) {
     visited[v] = true;
     for (int i = 0; i < n; i++) {
