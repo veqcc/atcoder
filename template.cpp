@@ -99,3 +99,37 @@ pair<ll, ll> CRT(const vector<ll> &b, const vector<ll> &m) {
     }
     return make_pair((r % M + M) % M, M);
 }
+
+
+// Bellman-Ford
+// a -> b with cost c
+// if undirected, a->b with c & b->a with c
+void bellman_ford() {
+    ll dist[N];
+    fill(dist, dist+N, inf);
+    dist[0] = 0;
+    for (int loop = 0; loop < N; loop++) {
+        for (int i = 0; i < M; i++) {
+            if (dist[a[i]] == inf) continue;
+            if (dist[b[i]] > dist[a[i]] + c[i]) {
+                dist[b[i]] = dist[a[i]] + c[i];
+            }
+        }
+    }
+
+    // negative loop detection
+    bool negative[N];
+    fill(negative, negative+N, false);
+    for (int loop = 0; loop < N; loop++) {
+        for (int i = 0; i < M; i++) {
+            if (dist[a[i]] == inf) continue;
+            if (dist[b[i]] > dist[a[i]] + c[i]) {
+                dist[b[i]] = dist[a[i]] + c[i];
+                negative[b[i]] = true;
+            }
+            if (negative[a[i]] == true) {
+                negative[b[i]] = true;
+            }
+        }
+    }
+}
