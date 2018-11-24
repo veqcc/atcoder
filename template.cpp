@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <queue>
 typedef long long ll;
 using namespace std;
 
@@ -145,4 +146,39 @@ void warshall_floyd() {
             }
         }
     }
+}
+
+
+// Dijkstra
+typedef pair<int ,int> P;
+int D[100000]; // total cost
+vector<P> G[100000]; // G[a] is vector of P(b,c) ( witch means [a->b with cost c] )
+void dijkstra(ll *D, vector<P> *G){
+    // max priority queue ordered by first element
+    // priority_queue < P > q;
+    // min priority queue ordered by first element
+    priority_queue < P, vector<P>, greater<P> > q;
+    for (int i = 0; i < N; i++) D[i] = inf;
+    D[0]=0;
+    q.push(P(0,0));
+    while (!q.empty()) {
+        P p = q.top();
+        q.pop();
+        int y = p.second; // p.second means current node position
+        if (D[y] != p.first) continue;
+        for (int i = 0; i < G[y].size(); i++) {
+            int node = G[y].at(i).first; // edge y->node
+            int cost = G[y].at(i).second; // cost of y->node
+            if (D[node] > D[y] + cost) {
+                D[node] = D[y] + cost;
+                q.push(P(D[node], node)); // P(total cost, current node)
+            }
+        }
+    }
+}
+int main4() {
+    for (int i = 0; i < M; i++) {
+        G[a].push_back(P(b, c));
+    }
+    dijkstra(D, G);
 }
