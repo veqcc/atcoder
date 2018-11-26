@@ -182,3 +182,8 @@ int main4() {
     }
     dijkstra(D, G);
 }
+
+
+// acos returns the inverse cosine of a number (argument) in radians
+const double pi = acos(-1.0); // π
+// atan2 returns tangent inverse of (y/x)
