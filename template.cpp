@@ -3,7 +3,9 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <cmath>
 typedef long long ll;
+typedef unsigned int uint;
 using namespace std;
 
 int main() {
@@ -190,7 +192,7 @@ const double pi = acos(-1.0); // π
 
 
 // Kruskal and Union Find Tree
-tree[100005];
+int tree[100005];
 pair<int, pair<int, int> > edges[200010]; // sorted Edges <cost<node,node>>
 int find(int x) { // create tree and returns root
     return tree[x] != x ? tree[x] = find(tree[x]) : x;
@@ -204,5 +206,42 @@ int main5() {
             tree[find(edges[i].second.first)] = find(edges[i].second.second); // merge tree
             ans += edges[i].first; // exploit edge
         }
+    }
+}
+
+struct UnionFind {
+    vector<int> par;
+    UnionFind(int n) : par(n, -1) {}
+    int find(int x) {
+        if (par[x] < 0) return x;
+        return par[x] = find(par[x]);
+    }
+    bool unite(int x, int y) {
+        x = find(x);
+        y = find(y);
+        if (x == y) return false;
+        if (par[x] > par[y]) {
+            par[y] += par[x];
+            par[x] = y;
+        } else {
+            par[x] += par[y];
+            par[y] = x;
+        }
+        return true;
+    }
+    bool same(int x, int y) {
+        return find(x) == find(y);
+    }
+};
+// usage
+int main6() {
+    sort(vec.begin(), vec.end());
+    UnionFind uf(10000);
+    for (int i = 0; i < vec.size(); i++) {
+        int e1 = vec[i].second.first;
+        int e2 = vec[i].second.second;
+        if (uf.same(e1, e2)) continue;
+        ans += vec[i].first;
+        uf.unite(e1, e2);
     }
 }
