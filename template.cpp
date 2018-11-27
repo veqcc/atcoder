@@ -187,3 +187,22 @@ int main4() {
 // acos returns the inverse cosine of a number (argument) in radians
 const double pi = acos(-1.0); // π
 // atan2 returns tangent inverse of (y/x)
+
+
+// Kruskal and Union Find Tree
+tree[100005];
+pair<int, pair<int, int> > edges[200010]; // sorted Edges <cost<node,node>>
+int find(int x) { // create tree and returns root
+    return tree[x] != x ? tree[x] = find(tree[x]) : x;
+}
+int main5() {
+    for (int i = 0; i < node_count; i++) {
+        tree[i] = i; //initialize tree
+    }
+    for (int i = 0; i < edge_count; i++) {
+        if (find(edges[i].second.first) != find(edges[i].second.second)) { // if in same tree
+            tree[find(edges[i].second.first)] = find(edges[i].second.second); // merge tree
+            ans += edges[i].first; // exploit edge
+        }
+    }
+}
