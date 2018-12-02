@@ -13,6 +13,8 @@ int n, m;
 string s, t;
 int dp[MAX_N][MAX_M];
 
+// LCS : Longest Common Subsequence
+
 int main() {
     cin.sync_with_stdio(false);
     cin.tie(0);
