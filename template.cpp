@@ -20,19 +20,6 @@ int main() {
 }
 
 
-// N×Nの隣接行列を作れないときは、
-//   vector <int> vec[100005];
-// などでNodeごとのvectorを作れば計算が間に合う。
-void dfs(int v) {
-    visited[v] = true;
-    for (int i = 0; i < n; i++) {
-        if (graph[v][i] == true && visited[i] == false) {
-            dfs(i);
-        }
-    }
-}
-
-
 // gcd lcm
 ll gcd(ll a, ll b) {
     if (b == 0) return a;
@@ -107,72 +94,6 @@ pair<ll, ll> CRT(const vector<ll> &b, const vector<ll> &m) {
 }
 
 
-// Bellman-Ford
-// a -> b with cost c
-// if undirected, a->b with c & b->a with c
-void bellman_ford() {
-    ll dist[N];
-    fill(dist, dist+N, inf);
-    dist[0] = 0;
-    for (int loop = 0; loop < N; loop++) {
-        for (int i = 0; i < M; i++) {
-            if (dist[a[i]] == inf) continue;
-            if (dist[b[i]] > dist[a[i]] + c[i]) {
-                dist[b[i]] = dist[a[i]] + c[i];
-            }
-        }
-    }
-
-    // negative loop detection
-    bool negative[N];
-    fill(negative, negative+N, false);
-    for (int loop = 0; loop < N; loop++) {
-        for (int i = 0; i < M; i++) {
-            if (dist[a[i]] == inf) continue;
-            if (dist[b[i]] > dist[a[i]] + c[i]) {
-                dist[b[i]] = dist[a[i]] + c[i];
-                negative[b[i]] = true;
-            }
-            if (negative[a[i]] == true) {
-                negative[b[i]] = true;
-            }
-        }
-    }
-}
-
-
-// Warshall-Floyd
-void warshall_floyd() {
-    int dist[n][n];
-    for (int k = 0; k < n; k++) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-            }
-        }
-    }
-}
-
-
 // acos returns the inverse cosine of a number (argument) in radians
 const double pi = acos(-1.0); // π
 // atan2 returns tangent inverse of (y/x)
-
-
-// Kruskal
-int tree[100005];
-pair<int, pair<int, int> > edges[200010]; // sorted Edges <cost<node,node>>
-int find(int x) { // create tree and returns root
-    return tree[x] != x ? tree[x] = find(tree[x]) : x;
-}
-int main5() {
-    for (int i = 0; i < node_count; i++) {
-        tree[i] = i; //initialize tree
-    }
-    for (int i = 0; i < edge_count; i++) {
-        if (find(edges[i].second.first) != find(edges[i].second.second)) { // if in same tree
-            tree[find(edges[i].second.first)] = find(edges[i].second.second); // merge tree
-            ans += edges[i].first; // exploit edge
-        }
-    }
-}
