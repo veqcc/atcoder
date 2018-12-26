@@ -12,8 +12,7 @@ typedef long long ll;
 typedef unsigned int uint;
 using namespace std;
 
-int N, K;
-int A[100000];
+int N, K, A;
 string S[100000];
 bool ok[100000];
 
@@ -23,24 +22,16 @@ int main() {
     cin >> N >> K;
 
     for (int i = 0; i < K; i++) {
-        cin >> A[i];
-        A[i]--;
-        ok[A[i]] = true;
+        cin >> A;
+        A--;
+        ok[A] = true;
     }
 
     for (int i = 0; i < N; i++) {
         cin >> S[i];
     }
 
-    string s = "";
-    for (int i = 0; i < N; i++) {
-        if (ok[i]) {
-            if (S[i].length() > s.length()) {
-                s = S[i];
-            }
-        }
-    }
-
+    string s = S[A];
     // 検索したい
     int len = s.length();
     for (int i = 0; i < N; i++) {
@@ -60,7 +51,9 @@ int main() {
 
         int j = 0;
         for (j = 0; j < len && j < S[i].length(); j++) {
-            if (S[i][j] != s[j]) break;
+            if (S[i][j] != s[j]) {
+                break;
+            }
         }
         same = max(same, j);
     }
