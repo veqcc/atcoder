@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -12,14 +13,15 @@ typedef long long ll;
 typedef unsigned int uint;
 using namespace std;
 
+double dp[305][305][305];
+
 int main() {
     cin.sync_with_stdio(false);
     cin.tie(0);
 
-    int n;
-    cin >> n;
-    int a=0, b=0, c=0;
-    for (int i = 0; i < n; i++) {
+    int N, a=0, b=0, c=0;;
+    cin >> N;
+    for (int i = 0; i < N; i++) {
         int p;
         cin >> p;
         if (p == 1) a++;
@@ -27,9 +29,19 @@ int main() {
         if (p == 3) c++;
     }
 
-    double dp[a+1][b+1][c+1];
-    fill(dp[0][0], dp[a][b]+c+1, 0.0);
+    for (int k = 0; k <= 300; k++) {
+        for (int j = 0; j <= 300; j++) {
+            for (int i = 0; i <= 300; i++) {
+                if (i + j + k == 0) continue;
+                dp[i][j][k] = N;
+                if (i) dp[i][j][k] += dp[i-1][j][k] * (double)i;
+                if (j) dp[i][j][k] += dp[i+1][j-1][k] * (double)j;
+                if (k) dp[i][j][k] += dp[i][j+1][k-1] * (double)k;
+                dp[i][j][k] /= (double)(i + j + k);
+            }
+        }
+    }
 
-    cout << n << "\n";
+    cout << fixed << setprecision(15) << dp[a][b][c] << "\n";
     return 0;
 }
