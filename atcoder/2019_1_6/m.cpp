@@ -35,7 +35,7 @@ int main() {
             if (j <= a[i-1]) {
                 dp[i][j] = (dp[i][j-1] + dp[i-1][j]) % mod;
             } else {
-                dp[i][j] = (dp[i][j-1] + dp[i-1][j] - dp[i-1][j - a[i-1] - 1]) % mod;
+                dp[i][j] = ((dp[i][j-1] + dp[i-1][j]) % mod + mod - dp[i-1][j - a[i-1] - 1]) % mod;
             }
         }
     }
