@@ -12,6 +12,8 @@ typedef long long ll;
 typedef unsigned int uint;
 using namespace std;
 
+const ll inf = 1LL << 60;
+
 int main() {
     cin.sync_with_stdio(false);
     cin.tie(0);
@@ -23,25 +25,21 @@ int main() {
         cin >> a[i];
     }
 
-    ll ret = 0LL;
+    ll dp[n+1][n+1];
+    fill(dp[0], dp[n+1], 0LL);
 
-    for (int i = 0; i < n-1; i++) {
-        ll mn = 1LL << 60;
-        int mn_j = 0;
-        for (int j = 0; j < n-i-1; j++) {
-            if (a[j] + a[j+1] < mn) {
-                mn = a[j] + a[j+1];
-                mn_j = j;
+    for (int i = n; i >= 0; i--) {
+        for (int j = i+2; j <= n; j++) {
+            ll tmp = 0LL;
+            dp[i][j] = inf;
+            for (int k = i; k < j; k++) {
+                tmp += a[k];
+                dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
             }
-        }
-
-        ret += mn;
-        a[mn_j] = mn;
-        for (int j = mn_j+1; j < n - i - 1; j++) {
-            a[j] = a[j+1];
+            dp[i][j] += tmp;
         }
     }
 
-    cout << ret << "\n";
+    cout << dp[0][n] << "\n";
     return 0;
 }
