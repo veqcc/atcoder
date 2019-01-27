@@ -19,25 +19,20 @@ int main() {
 
     int n;
     cin >> n;
-    int a[n];
-    int x = 0;
+    int a[n], x = 0;
     for (int i = 0; i < n; i++) {
         cin >> a[i];
         x ^= a[i];
-        a[i] = a[i] ^ (a[i] - 1);
+        a[i] ^= a[i] - 1;
     }
 
-    int ret = 0;
-    for (int k = 30; k > 0; k--) {
-        if (!(x & (1 << (k-1)))) continue;
+    sort(a, a+n, greater<int>());
 
-        for (int i = 0; i < n; i++) {
-            if (a[i] == (1 << k) - 1) {
-                x ^= (1 << k) - 1;
-                ret++;
-                a[i] = 0;
-                break;
-            }
+    int ret = 0;
+    for (int i = 0; i < n; i++) {
+        if ((x ^ a[i]) < x) {
+            x ^= a[i];
+            ret++;
         }
     }
 
