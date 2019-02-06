@@ -21,19 +21,19 @@ double prv[MAX_N];
 
 void init (int k, int l, int r) {
     ang[k] = vx[k] = 0.0;
-    if (r-1 == 1) {
-        vy[k] = L[1];
+    if (r-l== 1) {
+        vy[k] = L[l];
     } else {
         int chl = k * 2 + 1;
         int chr = k * 2 + 2;
-        init(chl, 1, (1 + r) / 2);
-        init(chr, (1 + r) / 2, r);
+        init(chl, l, (l + r) / 2);
+        init(chr, (l + r) / 2, r);
         vy[k] = vy[chl] + vy[chr];
     }
 }
 
 void change(int s, double a, int v, int l, int r) {
-    if (s <= 1) {
+    if (s <= l) {
         return;
     } else if (s < r) {
         int chl = v * 2 + 1;
