@@ -34,11 +34,6 @@ int main() {
         }
     }
 
-    ll ans = 0LL;
-    for (int i = 0; i <= 2 * len; i++) {
-        ans = (ans + dp[2 * len][i]) % mod;
-    }
-
-    cout << ans << "\n";
+    cout << dp[2*len][red[len]] << "\n";
     return 0;
 }
