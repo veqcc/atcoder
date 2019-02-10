@@ -16,6 +16,7 @@ using namespace std;
 int main() {
     cin.sync_with_stdio(false);
     cin.tie(0);
+    cout.tie(0);
 
     int n;
     cin >> n;
@@ -35,6 +36,18 @@ ll lcm(ll a, ll b) {
     return a / g * b;
 }
 
+// numのpower乗をmodで計算する
+const ll mod = 1000000007LL;
+ll power_mod(ll num, ll power) {
+    ll prod = 1;
+    num %= mod;
+    while (power > 0) {
+        if (power & 1) prod = prod * num % mod;
+        num = num * num % mod;
+        power >>= 1;
+    }
+    return prod;
+}
 
 // Combination (n fixed)
 ll M = 1000000007;
