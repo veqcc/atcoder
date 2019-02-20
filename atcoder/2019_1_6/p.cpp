@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -12,45 +13,35 @@ typedef long long ll;
 typedef unsigned int uint;
 using namespace std;
 
-ll mod = 1000000007;
-vector <int> G[100005];
+const ll MOD = 1000000007LL;
+int n;
+vector <int> edge[100005];
 ll dp[100005][2];
-ll ret = 0LL;
 
-void dfs(int x) {
-    bool all = true;
-    for (int i = 0; i < G[x].size(); i++) {
-        if (dp[G[x][i]][0] > 0LL) continue;
-
-        dp[G[x][i]][0] = (dp[x][0] + dp[x][1]) % mod;
-        dp[G[x][i]][1] = dp[x][0];
-        dfs(G[x][i]);
-        all = false;
-    }
-
-    if (all) {
-        ret += dp[x][0] + dp[x][1];
-        ret %= mod;
+void dfs(int cur, int par) {
+    dp[cur][0] = dp[cur][1] = 1;
+    for (auto to : edge[cur]) {
+        if (to == par) continue;
+        dfs(to, cur);
+        dp[cur][0] = (dp[to][0] + dp[to][1]) % MOD * dp[cur][0] % MOD;
+        dp[cur][1] = dp[cur][1] * dp[to][0] % MOD;
     }
 }
 
 int main() {
     cin.sync_with_stdio(false);
     cin.tie(0);
-
-    int n;
     cin >> n;
-    for (int i = 0; i < n-1; i++) {
-        int x, y;
-        cin >> x >> y;
-        x--; y--;
-        G[x].push_back(y);
-        G[y].push_back(x);
+    for (int i = 0; i < n - 1; i++) {
+        int a, b;
+        cin >> a >> b;
+        a--; b--;
+        edge[a].push_back(b);
+        edge[b].push_back(a);
     }
 
-    dp[0][0] = dp[0][1] = 1;
-    dfs(0);
+    dfs(0, -1);
 
-    cout << ret << "\n";
+    cout << (dp[0][0] + dp[0][1]) % MOD << "\n";
     return 0;
 }
