@@ -36,15 +36,15 @@ ll lcm(ll a, ll b) {
     return a / g * b;
 }
 
-// numのpower乗をmodで計算する
+// numのpow乗をmodで計算する
 const ll mod = 1000000007LL;
-ll power_mod(ll num, ll power) {
+ll pow_mod(ll num, ll po) {
     ll prod = 1;
     num %= mod;
-    while (power > 0) {
-        if (power & 1) prod = prod * num % mod;
+    while (pow > 0) {
+        if (pow & 1) prod = prod * num % mod;
         num = num * num % mod;
-        power >>= 1;
+        pow >>= 1;
     }
     return prod;
 }
