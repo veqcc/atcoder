@@ -16,10 +16,10 @@ int main() {
     int c1, c2, c3, c4;
     cin >> c1 >> c2 >> c3 >> c4;
 
-    if (c3 <= c1 * 2 && c3 <= c4 * 2 && c1 == c4) {
-        cout << 1 << "\n";
+    if (c1 != c4 || (c3 > 0 && c1 == 0)) {
+        cout << 0 << '\n';
     } else {
-        cout << 0 << "\n";
+        cout << 1 << '\n';
     }
 
     return 0;
