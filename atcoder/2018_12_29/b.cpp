@@ -12,49 +12,40 @@ typedef long long ll;
 typedef unsigned int uint;
 using namespace std;
 
-ll l, n, x[200005];
-
-ll rec(ll lhs, ll rhs, bool turn_right) {
-    if (lhs == -1) {
-        if (turn_right) {
-            return l - x[rhs];
-        } else {
-            return x[rhs];
-        }
-    } else if (rhs == n) {
-        if (turn_right) {
-            return l - x[lhs];
-        } else {
-            return x[lhs];
-        }
-    }
-
-    if (turn_right) {
-        return (l - x[rhs] + x[lhs]) + rec(lhs, rhs + 1, false);
-    } else {
-        return (l - x[rhs] + x[lhs]) + rec(lhs - 1, rhs, true);
-    }
-}
+const int dx[2] = {1, 0};
+const int dy[2] = {0, 1};
 
 int main() {
-    cin.sync_with_stdio(false);
-    cin.tie(0);
-    cin >> l >> n;
-    for (ll i = 0; i < n; i++) {
-        cin >> x[i];
+    ll L, N;
+    cin >> L >> N;
+
+    vector <ll> X(N+1), Y(N+1), Xs(N+1), Ys(N+1);
+    for (int i = 1; i <= N; i++) {
+        cin >> X[i];
+        Y[N + 1 - i] = L - X[i];
+    }
+    for (int i = 1; i <= N; i++) {
+        Xs[i] = Xs[i - 1] + X[i];
+        Ys[i] = Ys[i - 1] + Y[i];
     }
 
-    if (n == 1) {
-        cout << max(x[0], l - x[0]);
-        return 0;
-    }
+    ll ans = 0;
+    for (int d = 0; d <= N; d++) {
+        int xt = d, yt = N - d;
+        for (int k1 = 0; k1 < 2; k1++) {
+            for (int k2 = 0; k2 < 2; k2++) {
+                int cx = min(xt, yt + (-dy[k1] - dy[k2] + dx[k1] + dx[k2]) / 2);
+                int cy = min(yt, xt + (-dx[k1] - dx[k2] + dy[k1] + dy[k2]) / 2);
+                if (cx < 0 || cy < 0) continue;
 
-    ll ans = 0LL;
-    for (ll i = 0; i < n - 1; i++) {
-        ans = max(ans, rec(i, i + 1, true));
-        ans = max(ans, rec(i, i + 1, false));
+                ll result = 0;
+                result += (Xs[xt] - Xs[xt - cx]) * 2;
+                result += (Ys[yt] - Ys[yt - cy]) * 2;
+                result -= (k2 ? Y[yt] : X[xt]);
+                ans = max(ans, result);
+            }
+        }
     }
-
-    cout << ans << "\n";
+    cout << ans << endl;
     return 0;
 }
