@@ -7,34 +7,43 @@ using namespace std;
 int main() {
     string S, T;
     cin >> S >> T;
-    int s_len=S.size(), t_len=T.size();
-    string s_copy;
 
-    for (int i = s_len-t_len; i >= 0; i--) {
-        s_copy = S;
-        bool f = true;
+    int Slen = S.size(), Tlen = T.size();
+    string ans = "";
 
-        for (int j = 0; j < t_len; j++) {
-            if (s_copy.at(i+j) == T.at(j) || s_copy.at(i+j) == '?') {
-                s_copy.at(i+j) = T.at(j);
+    for (int i = Slen - Tlen; i >= 0; i--) {
+        string Scopy = S;
+        bool restorable = true;
+
+        for (int j = 0; j < Tlen; j++) {
+            if (Scopy[i+j] == T[j] || Scopy[i+j] == '?') {
+                Scopy[i+j] = T[j];
             } else {
-                f = false;
+                restorable = false;
                 break;
             }
         }
 
-        if (f) {
-            for (int j = 0; j < s_len; j++) {
-                if (s_copy.at(j) == '?') {
-                    s_copy.at(j) = 'a';
+        if (restorable) {
+            for (int j = 0; j < Slen; j++) {
+                if (Scopy[j] == '?') {
+                    Scopy[j] = 'a';
                 }
             }
 
-            cout << s_copy << endl;
-            return 0;
+            if (ans == "") {
+                ans = Scopy;
+            } else {
+                ans = min(ans, Scopy);
+            }
         }
     }
 
-    cout << "UNRESTORABLE" << endl;
+    if (ans == "") {
+        cout << "UNRESTORABLE" << endl;
+    } else {
+        cout << ans << "\n";
+    }
+
     return 0;
 }
