@@ -14,16 +14,12 @@ using namespace std;
 //   cf: https://snuke.hatenablog.com/entry/2014/12/01/235807
 
 // int period(int i)
-//   pattern[0:i] の最大周期長
+//   pattern[0:i] の最小周期長
 //   ex: abababcaa -> 122222778
 //   cf: https://snuke.hatenablog.com/entry/2015/04/05/184819
 
 // vector match(string s)
 //   s の中で pattern が現れる index の vector を返す　
-
-// verified
-//   https://yukicoder.me/problems/no/430
-//   (ただし、計算量はギリギリなので、KMPのもっといいverifyありそう)
 
 class KMP {
     string pattern;
@@ -69,7 +65,11 @@ public:
     }
 };
 
-int main() {
+
+// verified
+//   https://yukicoder.me/problems/no/430
+//   (ただし、計算量はギリギリなので、KMPのもっといいverifyありそう)
+void yuki430() {
     string s;
     cin >> s;
 
@@ -87,5 +87,21 @@ int main() {
     }
 
     cout << ans << "\n";
+}
+
+
+// verified
+//   http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_14_B&lang=jp
+void AOJ_ALDS1_14_B() {
+    string T, P;
+    cin >> T >> P;
+    KMP kmp(P);
+    vector <int> ans = kmp.match(T);
+    for (int i : ans) cout << i << "\n";
+}
+
+int main() {
+    // yuki430();
+    AOJ_ALDS1_14_B();
     return 0;
 }
