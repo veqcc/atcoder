@@ -4,6 +4,12 @@
 using namespace std;
 typedef long long ll;
 
+// i-indexed
+// 親nodeはk/2, 子nodeは2kと2k+1
+// update(k,x): k番目の要素をxに更新
+// query(a,b): 区間[a:b)に対して二項演算した結果を返す
+// operator[k]: k番目の要素を返す
+
 class SegmentTree {
     const function<ll(ll, ll)> f;
     int n, init;
@@ -16,11 +22,11 @@ public:
         node.assign(2 * n, init);
     }
 
-    void update(int x, ll val) {
-        x += n;
-        node[x] = val;
-        while (x >>= 1) {
-            node[x] = f(node[2 * x + 0], node[2 * x + 1]);
+    void update(int k, ll x) {
+        k += n;
+        node[k] = x;
+        while (k >>= 1) {
+            node[k] = f(node[2 * k], node[2 * k + 1]);
         }
     }
 
@@ -32,6 +38,10 @@ public:
             if (b & 1) r = f(node[--b], r);
         }
         return f(l, r);
+    }
+
+    ll operator[](int k) {
+        return node[k + n];
     }
 };
 
@@ -59,10 +69,7 @@ void AOJ_DSL_2_B() {
     while (q--) {
         cin >> c >> x >> y;
         if (c) cout << seg.query(x, y + 1) << "\n";
-        else {
-            int a = seg.query(x, x + 1);
-            seg.update(x, a + y);
-        }
+        else seg.update(x, seg[x] + y);
     }
 }
 
