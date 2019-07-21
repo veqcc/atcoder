@@ -15,6 +15,38 @@ typedef long long ll;
 using namespace std;
 const ll MOD = 1000000007LL;
 
+class SegmentTree {
+    using F = function<ll(ll, ll)>;
+    const F f;
+    int n, init;
+    vector<int> node;
+
+public:
+    SegmentTree(int sz, const F f, ll init) : f(f), init(init) {
+        n = 1;
+        while (n < sz) n <<= 1;
+        node.assign(2 * n, init);
+    }
+
+    void update(int x, ll val) {
+        x += n;
+        node[x] = val;
+        while (x >>= 1) {
+            node[x] = f(node[2 * x + 0], node[2 * x + 1]);
+        }
+    }
+
+    // [a:b)
+    ll query(int a, int b) {
+        ll l = init, r = init;
+        for (a += n, b += n; a < b; a >>= 1, b >>= 1) {
+            if (a & 1) l = f(l, node[a++]);
+            if (b & 1) r = f(node[--b], r);
+        }
+        return f(l, r);
+    }
+};
+
 int gcd(int a, int b) {
     if (b == 0) return a;
     return gcd(b, a % b);
@@ -28,20 +60,16 @@ int main() {
     int n;
     cin >> n;
 
-    int a[n];
-    for (int i = 0; i < n; i++) cin >> a[i];
+    SegmentTree seg(n, gcd, 0);
+    for (int i = 0; i < n; i++) {
+        int a;
+        cin >> a;
+        seg.update(i, a);
+    }
 
-    int ans = 0;
-    while (true) {
-        sort(a, a+n);
-
-        int g = a[1];
-        for (int i = 1; i < n; i++) g = gcd(g, a[i]);
-
-        ans = max(ans, g);
-        if (a[0] == a[n-1]) break;
-
-        for (int i = 0; i < n; i++) a[i] = gcd(a[0], a[i]);
+    int ans = 1;
+    for (int i = 0; i < n; i++) {
+        ans = max(ans, gcd(seg.query(0, i), seg.query(i+1, n)));
     }
 
     cout << ans << "\n";
