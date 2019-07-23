@@ -1,3 +1,4 @@
+#include <functional>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -54,26 +55,14 @@ public:
         add(s, 0, 0, nodes[0].count);
     }
 
-//    yukicoderでは std::function で CE してしまう（原因不明）
-//    void query(const string &s, const function<void(int)> &f, int str_i, int node_i) {
-//        for (auto &idx : nodes[node_i].accept) f(idx);
-//        if (str_i < s.size()) {
-//            const int c = s[str_i] - base;
-//            if (nodes[node_i].nxt[c] >= 0) {
-//                query(s, f, str_i + 1, nodes[node_i].nxt[c]);
-//            }
-//        }
-//    }
-
-    int enumerate(const string &s, int str_i, int node_i) {
-        int ret = nodes[node_i].accept.size();
+    void query(const string &s, const function<void(int)> &f, int str_i, int node_i) {
+        for (auto &idx : nodes[node_i].accept) f(idx);
         if (str_i < s.size()) {
             const int c = s[str_i] - base;
             if (nodes[node_i].nxt[c] >= 0) {
-                ret += enumerate(s, str_i + 1, nodes[node_i].nxt[c]);
+                query(s, f, str_i + 1, nodes[node_i].nxt[c]);
             }
         }
-        return ret;
     }
 };
 
@@ -81,38 +70,29 @@ public:
 // verified
 //   https://tenka1-2016-final-open.contest.atcoder.jp/tasks/tenka1_2016_final_c
 
-//void AtCoder_2016_9_10_C() {
-//    string s;
-//    cin >> s;
-//
-//    int m;
-//    cin >> m;
-//
-//    Trie<26, 'a'> trie;
-//
-//    string p[5005];
-//    for (int i = 0; i < m; i++) {
-//        cin >> p[i];
-//        trie.add(p[i]);
-//    }
-//
-//    int w[5005];
-//    for (int i = 0; i < m; i++) {
-//        cin >> w[i];
-//    }
-//
-//    int sz = s.size();
-//    vector <int> dp(sz + 1);
-//    for (int i = 0; i < sz; i++) {
-//        auto update = [&](int idx) {
-//            dp[i + p[idx].size()] = max(dp[i + p[idx].size()], dp[i] + w[idx]);
-//        };
-//        trie.query(s, update, i, 0);
-//        dp[i + 1] = max(dp[i + 1], dp[i]);
-//    }
-//
-//    cout << dp.back() << "\n";
-//}
+void AtCoder_2016_9_10_C() {
+    string s;
+    int m;
+    cin >> s >> m;
+    Trie<26, 'a'> trie;
+    string p[5005];
+    for (int i = 0; i < m; i++) {
+        cin >> p[i];
+        trie.add(p[i]);
+    }
+    int w[5005];
+    for (int i = 0; i < m; i++) cin >> w[i];
+    int sz = s.size();
+    vector <int> dp(sz + 1);
+    for (int i = 0; i < sz; i++) {
+        auto update = [&](int idx) {
+            dp[i + p[idx].size()] = max(dp[i + p[idx].size()], dp[i] + w[idx]);
+        };
+        trie.query(s, update, i, 0);
+        dp[i + 1] = max(dp[i + 1], dp[i]);
+    }
+    cout << dp.back() << "\n";
+}
 
 
 // verified
@@ -122,20 +102,17 @@ void yuki_430() {
     string s;
     int m;
     cin >> s >> m;
-
     Trie<26, 'A'> trie;
-
     string c[5005];
     for (int i = 0; i < m; i++) {
         cin >> c[i];
         trie.add(c[i]);
     }
-
     int ans = 0;
     for (int i = 0; i < s.size(); i++) {
-        ans += trie.enumerate(s, i, 0);
+        auto update = [&](int idx) { ans++; };
+        trie.query(s, update, i, 0);
     }
-
     cout << ans << '\n';
 }
 
