@@ -9,17 +9,19 @@ const ll MOD = 1000000007LL;
 //  ・箱の区別をしない
 //  ・箱に入る玉の数は1つ以上
 
-// 計算方法
+// 計算方法1: O(K log(N))
 //  空箱の数で包除原理。k箱のうちi箱にのみ玉を入れるとすると↓
 //  S(n,k) = (1/k!) * Σ(0<=i<=k) (-1)^(k-i) * {k,i} * i^n
-//  計算量: O(K log(N))
+
+// 計算方法2: O(NK)
+//  S(n,k) = S(n-1,k-1) + kS(n-1,k)
+//  この漸化式の考え方の方が応用範囲が広い
 
 class Combination {
 public:
     vector <ll> fac, inv, fiv;
     Combination(int N) : fac(N), inv(N), fiv(N) {
-        fac[0] = inv[0] = fiv[0] = 1;
-        fac[1] = inv[1] = fiv[1] = 1;
+        fac[0] = inv[0] = fiv[0] = fac[1] = inv[1] = fiv[1] = 1;
         for (ll i = 2; i < N; i++) {
             fac[i] = fac[i - 1] * i % MOD; // n!
             inv[i] = inv[MOD % i] * (MOD - MOD / i) % MOD; // n^-1
