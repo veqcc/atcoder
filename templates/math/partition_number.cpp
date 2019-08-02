@@ -50,10 +50,11 @@ class PartitionNumber {
     }
 
 public:
-    PartitionNumber(int N) : P(N + 1, vector<ll>(N + 1, 0)), Q(N + 1, vector<ll>(N + 1, 0)) {
+    PartitionNumber(int N) {
+        P.assign(N + 1, vector<ll>(N + 1, 0));
+        Q.assign(N + 1, vector<ll>(N + 1, 0));
         initP(N);
         initQ(N);
-
     }
 
     ll p(int n, int k) { return P[n][k]; }
@@ -63,12 +64,22 @@ public:
 
 
 // verified
-//   http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_5_J&lang=jp
+//   https://onlinejudge.u-aizu.ac.jp/courses/library/7/DPL/5/DPL_5_J
 void AOJ_DPL_5_J() {
     int n, k;
     cin >> n >> k;
     PartitionNumber pn(1000);
     cout << pn.p(n, k) << "\n";
+}
+
+
+// verified
+//   https://onlinejudge.u-aizu.ac.jp/courses/library/7/DPL/5/DPL_5_L
+void AOJ_DPL_5_L() {
+    int n, k;
+    cin >> n >> k;
+    PartitionNumber pn(1000);
+    cout << pn.q(n, k) << "\n";
 }
 
 
@@ -86,7 +97,8 @@ void yuki269() {
 }
 
 int main() {
-    AOJ_DPL_5_J();
+    // AOJ_DPL_5_J();
+    AOJ_DPL_5_L();
     //yuki269();
     return 0;
 }
