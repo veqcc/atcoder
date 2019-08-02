@@ -24,7 +24,17 @@ void AOJ_NTL_1_B() {
     cout << pow_mod(m, n, MOD) << "\n";
 }
 
+
+// verified
+//   https://onlinejudge.u-aizu.ac.jp/courses/library/7/DPL/all/DPL_5_A
+void AOJ_DPL_5_A() {
+    int n, k;
+    cin >> n >> k;
+    cout << pow_mod(k, n, MOD) << "\n";
+}
+
 int main() {
-    AOJ_NTL_1_B();
+    // AOJ_NTL_1_B();
+    AOJ_DPL_5_A();
     return 0;
 }
