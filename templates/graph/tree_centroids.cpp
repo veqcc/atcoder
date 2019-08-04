@@ -1,19 +1,5 @@
-#include <algorithm>
-#include <iostream>
-#include <iomanip>
-#include <cstring>
-#include <string>
 #include <vector>
-#include <random>
-#include <bitset>
-#include <queue>
-#include <cmath>
-#include <stack>
-#include <set>
-#include <map>
-typedef long long ll;
 using namespace std;
-const ll MOD = 1000000007LL;
 
 vector<int> Centroid(const vector<vector<int>> &edge) {
     int n = edge.size();
@@ -34,6 +20,12 @@ vector<int> Centroid(const vector<vector<int>> &edge) {
     dfs(0, -1);
     return centroids;
 }
+
+
+// verified
+//   https://github.com/veqcc/atcoder/blob/a48a72336eb4f33cf8d34d9f6c10df9d4858c7e1/atcoder/2017_12_16/f.cpp
+//   https://github.com/veqcc/atcoder/blob/26a8b8a7a535b9d4c2b0ad068310cfb8b4487ede/atcoder/2018_1_13/e.cpp
+//   https://github.com/veqcc/atcoder/blob/d60abbdc12fdfaeffe6241c983dafc558d4fba38/atcoder/2017_7_23/d.cpp
 
 int main() {
     return 0;
