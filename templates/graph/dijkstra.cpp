@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+typedef long long ll;
 using namespace std;
-typedef pair <int, int> P;
-const int INF = 1 << 30;
+typedef pair <ll, int> P;
+const ll INF = 1LL << 60;
 
-vector <int> dijkstra(vector<vector<P>> &edge, int s) {
-    vector <int> dist(edge.size(), INF);
+vector <ll> dijkstra(vector<vector<P>> &edge, int s) {
+    vector <ll> dist(edge.size(), INF);
     priority_queue <P, vector<P>, greater<P>> q;
     q.push({0, s});
     dist[s] = 0;
@@ -15,11 +16,11 @@ vector <int> dijkstra(vector<vector<P>> &edge, int s) {
         P p = q.top();
         q.pop();
         int cur = p.second;
-        int cost = p.first;
+        ll cost = p.first;
         if (dist[cur] < cost) continue;
         for (P nxt : edge[cur]) {
-            int next_node = nxt.first;
-            int cost_sum = cost + nxt.second;
+            int next_node = nxt.second;
+            ll cost_sum = cost + nxt.first;
             if (dist[next_node] > cost_sum) {
                 dist[next_node] = cost_sum;
                 q.push({cost_sum, next_node});
@@ -39,13 +40,14 @@ void AOJ_GLR_1_A() {
 
     vector<vector<P>> edge(V);
     for (int i = 0; i < E; i++) {
-        int s, t, d;
+        int s, t;
+        ll d;
         cin >> s >> t >> d;
-        edge[s].push_back({t, d});
+        edge[s].push_back({d, t});
     }
 
-    vector <int> dist = dijkstra(edge, r);
-    for (int d : dist) {
+    vector <ll> dist = dijkstra(edge, r);
+    for (ll d : dist) {
         if (d == INF) {
             cout << "INF\n";
         } else {
