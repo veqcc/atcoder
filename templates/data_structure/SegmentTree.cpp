@@ -4,12 +4,6 @@
 using namespace std;
 typedef long long ll;
 
-// 1-indexed
-// 親nodeはk/2, 子nodeは2kと2k+1
-// update(k,x): k番目の要素をxに更新
-// query(a,b): 区間[a:b)に対して二項演算した結果を返す
-// operator[k]: k番目の要素を返す
-
 template <typename T>
 class SegmentTree {
     using F = function<T(T, T)>;
