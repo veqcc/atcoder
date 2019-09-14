@@ -15,6 +15,7 @@ typedef long long ll;
 using namespace std;
 const ll MOD = 1000000007LL;
 typedef pair <string, int> P;
+typedef pair <P, int> PP;
 
 int main() {
     cin.sync_with_stdio(false);
@@ -24,23 +25,20 @@ int main() {
     int n;
     cin >> n;
 
-    map <string, vector <int> > mp;
-    map <P, int> idx;
+    vector <PP> vec(n);
     for (int i = 0; i < n; i++) {
-        string s;
-        int p;
-        cin >> s >> p;
-        idx[P(s, p)] = i + 1;
-        mp[s].push_back(p);
+        cin >> vec[i].first.first >> vec[i].first.second;
+        vec[i].second = i + 1;
     }
 
-    for (auto itr = mp.begin(); itr != mp.end(); itr++) {
-        sort(itr->second.begin(), itr->second.end(), greater<int>());
-        for (int i = 0; i < itr->second.size(); i++) {
-            P p = P(itr->first, itr->second[i]);
-            cout << idx[p] << '\n';
+    sort(vec.begin(), vec.end(), [](const PP &x, const PP &y) {
+        if (x.first.first == y.first.first) {
+            return x.first.second > y.first.second;
+        } else {
+            return x.first.first < y.first.first;
         }
-    }
+    });
 
+    for (auto p : vec) cout << p.second << '\n';
     return 0;
 }
