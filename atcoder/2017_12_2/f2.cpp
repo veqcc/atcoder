@@ -14,79 +14,70 @@
 typedef long long ll;
 using namespace std;
 const ll MOD = 1000000007LL;
-const int MAX_ROW = 30;
+
+const int MAX_ROW = 20;
 const int MAX_COL = 100005;
 
 struct BitMatrix {
-    int n, m;
+    int H, W;
     bitset<MAX_COL> val[MAX_ROW];
-    BitMatrix(int n_ = 1, int m_ = 1) { n = n_; m = m_; }
-    inline bitset<MAX_COL> &operator [] (int i) { return val[i]; }
-    inline friend ostream &operator << (ostream &s, BitMatrix M) {
-        s << "\n";
-        for (int i = 0; i < M.n; i++) {
-            for (int j = 0; j < M.m; j++) s << M.val[i][j];
-            s << "\n";
-        }
-        return s;
-    }
+    BitMatrix(int m, int n) : H(m), W(n) {}
+    inline bitset<MAX_COL> & operator [] (int i) { return val[i]; }
 };
-
-inline BitMatrix operator * (BitMatrix A, BitMatrix B) {
-    BitMatrix R(A.n, B.m);
-    BitMatrix tB(B.m, B.n);
-    for (int i = 0; i < tB.n; i++) for (int j = 0; j < tB.m; j++) tB[i][j] = B[j][i];
-    for (int i = 0; i < R.n; i++) for (int j = 0; j < R.m; j++) R[i][j] = (A[i] & tB[j]).any();
-    return R;
-}
-
-int linear_equation(BitMatrix A, vector<int> b) {
+int GaussJordan(BitMatrix &A, bool is_extended = false) {
     int rank = 0;
-    for (int i = 0; i < A.n; i++) A[i][A.m] = b[i];
-    for (int i = 0; i < A.m; i++) {
+    for (int col = 0; col < A.W; col++) {
+        if (is_extended && col == A.W - 1) break; // 拡大係数行列。この場合、最後の列は掃き出さない
         int pivot = -1;
-        for (int j = rank; j < A.n; j++) if (A[j][i]) { pivot = j; break; }
-        if (pivot != -1) {
-            swap(A[pivot], A[rank]);
-            for (int j = 0; j < A.n; j++) if (j != rank && A[j][i]) A[j] ^= A[rank];
-            rank++;
+        for (int row = rank; row < A.H; row++) if (A[row][col]) { pivot = row; break; }
+        if (pivot == -1) continue;
+        swap(A[pivot], A[rank]);
+        for (int row = 0; row < A.H; row++) {
+            if (row != rank && A[row][col]) A[row] ^= A[rank];
         }
+        rank++;
     }
-    for (int i = rank; i < A.n; i++) if (A[i][A.m]) return -1;
+    return rank;
+}
+int linear_equation(BitMatrix A, vector<int> b) {
+    int m = A.H, n = A.W;
+    BitMatrix M(m, n + 1);
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) M[i][j] = A[i][j];
+        M[i][n] = b[i];
+    }
+    int rank = GaussJordan(M, true);
+    for (int row = rank; row < m; row++) {
+        if (M[row][n]) return -1; // check if it has no solution
+    }
     return rank;
 }
 
-ll modpow(ll a, ll n, ll mod) {
-    ll res = 1;
-    while (n) {
-        if (n & 1) res = res * a % mod;
-        a = a * a % mod;
-        n >>= 1;
+ll pow_mod(ll num, ll pow, ll mod) {
+    ll prod = 1;
+    num %= mod;
+    while (pow > 0) {
+        if (pow & 1) prod = prod * num % mod;
+        num = num * num % mod;
+        pow >>= 1;
     }
-    return res;
+    return prod;
 }
 
-const int digit = 20;
-
 int main() {
-    cin.sync_with_stdio(false);
-    cin.tie(0);
-
-    int n, k;
+    int n, k, a;
     cin >> n >> k;
-
-    vector <int> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-
-    BitMatrix A(digit, n);
-    vector <int> b(digit);
-    for (int d = 0; d < digit; d++) {
-        for (int i = 0; i < n; i++) if (a[i] & (1 << d)) A[d][i] = 1;
-        if (k & (1 << d)) b[d] = 1;
+    vector<int> b(MAX_ROW);
+    for (int j = 0; j < MAX_ROW; j++) {
+        if ((1 << j) & k) b[j] = 1;
     }
-
+    BitMatrix A(MAX_ROW, n);
+    for (int i = 0; i < n; i++) {
+        cin >> a;
+        for (int j = 0; j < MAX_ROW; j++) {
+            if ((1 << j) & a) A[j][i] = 1;
+        }
+    }
     int rank = linear_equation(A, b);
-    if (rank == -1) cout << 0 << "\n";
-    else cout << modpow(2LL, n - rank, MOD) << "\n";
-    return 0;
+    cout << (rank == -1 ? 0 : pow_mod(2, n - rank, MOD)) << '\n';
 }
