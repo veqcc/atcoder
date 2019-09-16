@@ -7,8 +7,8 @@ typedef long long ll;
 // binary行列の掃き出し法と行列累乗
 // bitset高速化により、定数倍速い
 
-const int MAX_ROW = 500;
-const int MAX_COL = 500;
+const int MAX_ROW = 1;
+const int MAX_COL = 1;
 struct BitMatrix {
     int H, W;
     bitset<MAX_COL> val[MAX_ROW];
@@ -55,20 +55,76 @@ int linear_equation(BitMatrix A, vector<int> b, vector<int> &res) {
     return rank;
 }
 
+ll pow_mod(ll num, ll pow, ll mod) {
+    ll prod = 1;
+    num %= mod;
+    while (pow > 0) {
+        if (pow & 1) prod = prod * num % mod;
+        num = num * num % mod;
+        pow >>= 1;
+    }
+    return prod;
+}
 
-// verified
+
+// verified (XOR)
 //  https://atcoder.jp/contests/code-thanks-festival-2017/tasks/code_thanks_festival_2017_f
 
-// verified
+// verified (XOR)
 //  https://atcoder.jp/contests/abc141/tasks/abc141_f
 
-// verified
+// verified (XOR)
 //  https://yukicoder.me/problems/no/184
 
-// verified
+// verified (XOR)
 //  https://yukicoder.me/problems/no/803
 
+// verified (ライツアウト)
+//  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1308&lang=en
+void AOJ_Awkward_Lights() {
+    int m, n, d;
+    while (true) {
+        cin >> m >> n >> d;
+        if (m == 0) break;
+        vector <vector<int>> s(n, vector<int>(m));
+        for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) cin >> s[i][j];
+        BitMatrix A(n * m, n * m);
+        vector<int> b(n * m), res;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                A[i * m + j][i * m + j] = 1;
+                b[i * m + j] = 1 - s[i][j];
+                for (int k = 0; k < n; k++)
+                    for (int l = 0; l < m; l++)
+                        if (abs(i - k) + abs(j - l) == d) A[i * m + j][k * m + l] = 1;
+            }
+        }
+        cout << (linear_equation(A, b, res) == -1 ? 0 : 1) << '\n';
+    }
+}
+
+
+// verified (ライツアウト)
+//  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2530
+void AOJ_Reverse_Game() {
+    int r, c;
+    cin >> r >> c;
+    vector<int> b(r * c), res;
+    for (int i = 0; i < r; i++) for (int j = 0; j < c; j++) cin >> b[i * c + j];
+    BitMatrix A(r * c, r * c);
+    for (int i = 0; i < r; i++)
+        for (int j = 0; j < c; j++)
+            for (int k = 0; k < r; k++)
+                for (int l = 0; l < c; l++)
+                    if (i == k || j == l || abs(i - k) == abs(j - l))
+                        A[i * c + j][k * c + l] = 1;
+    int rank = linear_equation(A, b, res);
+    cout << (rank == -1 ? 0 : pow_mod(2, r * c - rank, 1000000009)) << '\n';
+}
+
+
 int main() {
-    yuki184();
+    // AOJ_Awkward_Lights();
+    AOJ_Reverse_Game();
     return 0;
 }
