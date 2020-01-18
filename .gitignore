@@ -1,3 +1,9 @@
 *.class
 atcoder.iml
 a.out
+*.o
+*.hi
+**/a
+**/b
+**/c
+**/d
