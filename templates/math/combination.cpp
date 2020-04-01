@@ -4,30 +4,68 @@ typedef long long ll;
 using namespace std;
 const ll MOD = 1000000007LL;
 
+template <ll mod> class ModInt {
+    ll a;
+public:
+    constexpr ModInt(const ll a = 0) noexcept : a((a % mod + mod) % mod) {}
+    constexpr ll &value() noexcept { return a; }
+    constexpr ModInt operator + (const ModInt &rhs) const noexcept { return ModInt(*this) += rhs; }
+    constexpr ModInt operator - (const ModInt &rhs) const noexcept { return ModInt(*this) -= rhs; }
+    constexpr ModInt operator * (const ModInt &rhs) const noexcept { return ModInt(*this) *= rhs; }
+    constexpr ModInt operator / (const ModInt &rhs) const noexcept { return ModInt(*this) /= rhs; }
+    constexpr ModInt &operator += (const ModInt &rhs) noexcept {
+        a += rhs.a;
+        if (a >= mod) a -= mod;
+        return *this;
+    }
+    constexpr ModInt &operator -= (const ModInt &rhs) noexcept {
+        a += mod - rhs.a;
+        if (a >= mod) a -= mod;
+        return *this;
+    }
+    constexpr ModInt &operator *= (const ModInt &rhs) noexcept {
+        a = a * rhs.a % mod;
+        return *this;
+    }
+    constexpr ModInt pow(ll t) const noexcept {
+        if (t == 0) return 1;
+        auto ret = pow(t >> 1);
+        ret *= ret;
+        if (t & 1) ret *= *this;
+        return ret;
+    }
+    constexpr ModInt inv() const noexcept { return pow(mod - 2); }
+    constexpr ModInt operator /=(const ModInt &rhs) { return (*this) *= rhs.inv(); }
+    constexpr bool operator == (const ModInt &rhs) const noexcept { return this->a == rhs.a; }
+    constexpr bool operator != (const ModInt &rhs) const noexcept { return this->a != rhs.a; }
+    friend constexpr ostream &operator << (ostream &os, const ModInt &rhs) noexcept { return os << rhs.a; }
+    friend constexpr istream &operator >> (istream &is, ModInt &rhs) {
+        is >> rhs.a;
+        return is;
+    }
+};
+using mint = ModInt<MOD>;
+
 class Combination {
 public:
-    vector <ll> fac, inv, fiv;
-
+    vector <mint> fac, inv, fiv;
     Combination(int N) : fac(N + 1), inv(N + 1), fiv(N + 1) {
         fac[0] = inv[0] = fiv[0] = fac[1] = inv[1] = fiv[1] = 1;
         for (ll i = 2; i <= N; i++) {
-            fac[i] = fac[i - 1] * i % MOD; // n!
-            inv[i] = inv[MOD % i] * (MOD - MOD / i) % MOD; // n^-1
-            fiv[i] = fiv[i - 1] * inv[i] % MOD; // (n!)^-1
+            fac[i] = fac[i - 1] * i; // n!
+            inv[i] = inv[MOD % i] * (MOD - MOD / i); // n^-1
+            fiv[i] = fiv[i - 1] * inv[i]; // (n!)^-1
         }
     }
-
-    ll C(ll n, ll k) {
+    mint C(ll n, ll k) {
         if (k < 0 || n < k) return 0;
-        return fac[n] * fiv[k] % MOD * fiv[n - k] % MOD;
+        return fac[n] * fiv[k] * fiv[n - k];
     }
-
-    ll P(ll n, ll k) {
+    mint P(ll n, ll k) {
         if (k < 0 || n < k) return 0;
-        return fac[n] * fiv[n - k] % MOD;
+        return fac[n] * fiv[n - k];
     }
-
-    ll H(ll n, ll k) {
+    mint H(ll n, ll k) {
         if (n == 0 && k == 0) return 1;
         return C(n + k - 1, k - 1);
     }
@@ -66,19 +104,14 @@ void AOJ_DPL_5_B() {
 
 // verified
 //   https://onlinejudge.u-aizu.ac.jp/courses/library/7/DPL/5/DPL_5_C
-ll pow_mod(ll num, ll pow, ll mod) {
-    ll prod = 1; num %= mod;
-    while (pow > 0) { if (pow & 1) prod = prod * num % mod; num = num * num % mod; pow >>= 1; }
-    return prod;
-}
 void AOJ_DPL_5_C() {
     int n, k;
     cin >> n >> k;
     Combination com(k);
-    ll ans = 0;
+    mint ans = 0;
     for (int i = 0; i < k; i++) {
-        ll sgn = i % 2 == 0 ? 1 : -1;
-        ans = (ans + MOD + sgn * com.C(k, k - i) * pow_mod(k - i, n, MOD) % MOD) % MOD;
+        mint sgn = i % 2 == 0 ? 1 : -1;
+        ans += sgn * com.C(k, k - i) * ((mint)(k - i)).pow(n);
     }
     cout << ans << "\n";
 }
@@ -114,11 +147,11 @@ void AOJ_DPL_5_F() {
 }
 
 int main() {
-    // yuki117();
+    yuki117();
     // AOJ_DPL_5_B();
     // AOJ_DPL_5_C();
     // AOJ_DPL_5_D();
     // AOJ_DPL_5_E();
-    AOJ_DPL_5_F();
+    // AOJ_DPL_5_F();
     return 0;
 }
