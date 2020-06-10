@@ -37,26 +37,45 @@ vector <ll> dijkstra(vector<vector<P>> &edge, int s) {
 void AOJ_GLR_1_A() {
     int V, E, r;
     cin >> V >> E >> r;
-
     vector<vector<P>> edge(V);
     for (int i = 0; i < E; i++) {
-        int s, t;
-        ll d;
+        int s, t; ll d;
         cin >> s >> t >> d;
         edge[s].push_back({d, t});
     }
-
-    vector <ll> dist = dijkstra(edge, r);
+    auto dist = dijkstra(edge, r);
     for (ll d : dist) {
-        if (d == INF) {
-            cout << "INF\n";
-        } else {
-            cout << d << "\n";
-        }
+        if (d == INF) cout << "INF\n";
+        else cout << d << "\n";
     }
 }
 
+// verified
+//  https://atcoder.jp/contests/abc035/tasks/abc035_d
+void AtCoder2016_3_26_d() {
+    ll n, m, t;
+    cin >> n >> m >> t;
+    vector<ll> a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    vector<vector<P>> edge(n), rev_edge(n);
+    for (int i = 0; i < m; i++) {
+        ll a, b, c;
+        cin >> a >> b >> c;
+        a--; b--;
+        edge[a].push_back({c, b});
+        rev_edge[b].push_back({c, a});
+    }
+    auto dist = dijkstra(edge, 0);
+    auto rev_dist = dijkstra(rev_edge, 0);
+    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+        ans = max(ans, a[i] * max(0ll, (t - dist[i] - rev_dist[i])));
+    }
+    cout << ans << endl;
+}
+
 int main() {
-    AOJ_GLR_1_A();
+    // AOJ_GLR_1_A();
+    AtCoder2016_3_26_d();
     return 0;
 }
