@@ -5,7 +5,7 @@ typedef long long ll;
 const ll INF = 1ll << 60;
 
 // O(N^3)
-// return value: whether the graph has negative loop
+// return value: whether the graph does not have negative loop
 bool warshall_floyd(vector<vector<ll>> &adj) {
     int n = adj.size();
     for (int k = 0; k < n; k++) {
@@ -52,10 +52,11 @@ void AOJ_GRL_1_C() {
 //  https://atcoder.jp/contests/abc073/tasks/abc073_d
 #include <algorithm>
 void AtCoder_2017_9_9_D() {
-    int n, m, r, a, b; ll c;
-    cin >> n >> m >> r;
-    vector<int> rs(r);
-    for (int i = 0; i < r; i++) { cin >> rs[i]; rs[i]--; }
+    int n, m, R, a, b, c;
+    cin >> n >> m >> R;
+    vector<int> r(R);
+    for (int i = 0; i < R; i++) { cin >> r[i]; r[i]--; }
+    sort(r.begin(), r.end());
     vector<vector<ll>> adj(n, vector<ll>(n, INF));
     for (int i = 0; i < n; i++) adj[i][i] = 0;
     for (int i = 0; i < m; i++) {
@@ -64,11 +65,11 @@ void AtCoder_2017_9_9_D() {
         if (c < adj[a][b]) adj[a][b] = adj[b][a] = c;
     }
     warshall_floyd(adj);
-    ll ans = 0;
-    for (int i = 1; i < r; i++) ans += adj[rs[i - 1]][rs[i]];
-    while (next_permutation(rs.begin(), rs.end())) {
-        ll tmp = 0;
-        for (int i = 1; i < r; i++) tmp += adj[rs[i - 1]][rs[i]];
+    int ans = 0;
+    for (int i = 1; i < R; i++) ans += adj[r[i - 1]][r[i]];
+    while (next_permutation(r.begin(), r.end())) {
+        int tmp = 0;
+        for (int i = 1; i < R; i++) tmp += adj[r[i - 1]][r[i]];
         ans = min(ans, tmp);
     }
     cout << ans << endl;
