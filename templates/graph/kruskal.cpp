@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 using namespace std;
+typedef pair<int, int> P;
 
 // Kruskal法
 //   証明: http://drken1215.hatenablog.com/entry/20121223/1356230697
@@ -27,21 +28,20 @@ public:
     int size(int x) { return -par[find(x)]; }
 };
 
-struct Edge {
-    int from, to, cost;
-};
-
-int kruskal(vector<Edge> &edge, int V) {
-    sort(edge.begin(), edge.end(), [](const Edge &a, const Edge &b) {
-        return a.cost < b.cost;
-    });
-
-    UnionFind uf(V);
+int kruskal(vector<vector<P>> &edge) {
+    int n = edge.size();
+    typedef pair<int, P> PP;
+    vector<PP> weights;
+    for (int i = 0; i < n; i++) {
+        for (auto &e : edge[i]) weights.push_back({e.second, {i, e.first}});
+    }
+    sort(weights.begin(), weights.end());
+    UnionFind uf(n);
     int ret = 0;
-    for (Edge &e : edge) {
-        if (uf.unite(e.from, e.to)) {
-            ret += e.cost;
-        }
+    for (auto &w : weights) {
+        int from = w.second.first;
+        int to = w.second.second;
+        if (uf.unite(from, to)) ret += w.first;
     }
     return ret;
 };
@@ -52,15 +52,13 @@ int kruskal(vector<Edge> &edge, int V) {
 void AOJ_GRL_2_A() {
     int V, E;
     cin >> V >> E;
-
-    vector <Edge> edge;
+    vector<vector<P>> edge(V);
     for (int i = 0; i < E; i++) {
         int s, t, w;
         cin >> s >> t >> w;
-        edge.push_back({s, t, w});
+        edge[s].push_back({t, w});
     }
-
-    cout << kruskal(edge, V) << "\n";
+    cout << kruskal(edge) << endl;
 }
 
 int main() {
