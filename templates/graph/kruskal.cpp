@@ -61,7 +61,26 @@ void AOJ_GRL_2_A() {
     cout << kruskal(edge) << endl;
 }
 
+// verified
+//   http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_12_A&lang=jp
+void AOJ_ALDS1_12_A() {
+    int n;
+    cin >> n;
+    vector<vector<P>> edge(n);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int w;
+            cin >> w;
+            if (w < 0) continue;
+            if (j < i) continue;
+            edge[i].push_back({j, w});
+        }
+    }
+    cout << kruskal(edge) << endl;
+}
+
 int main() {
-    AOJ_GRL_2_A();
+    // AOJ_GRL_2_A();
+    AOJ_ALDS1_12_A();
     return 0;
 }
