@@ -43,18 +43,30 @@ map<int, int> prime_factor(int n) {
 void AOJ_NTL_1_A() {
     int n;
     cin >> n;
-    cout << n << ":";
-
-    map<int, int> mp = prime_factor(n);
+    cout << n << ':';
+    auto mp = prime_factor(n);
     for (auto itr = mp.begin(); itr != mp.end(); itr++) {
         for (int i = 0; i < itr->second; i++) {
-            cout << " " << itr->first;
+            cout << ' ' << itr->first;
         }
     }
-    cout << "\n";
+    cout << endl;
+}
+
+// verified
+//  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_1_C
+void AOJ_ALDS1_1_C() {
+    int n, x, ans = 0;
+    cin >> n;
+    while (n--) {
+        cin >> x;
+        if (is_prime(x)) ans++;
+    }
+    cout << ans << endl;
 }
 
 int main() {
-    AOJ_NTL_1_A();
+    // AOJ_NTL_1_A();
+    AOJ_ALDS1_1_C();
     return 0;
 }
