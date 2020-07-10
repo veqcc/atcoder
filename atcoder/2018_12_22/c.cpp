@@ -1,46 +1,44 @@
-#include <iostream>
+#include <functional>
 #include <algorithm>
+#include <iostream>
+#include <iomanip>
+#include <cstring>
 #include <string>
 #include <vector>
+#include <random>
+#include <bitset>
 #include <queue>
 #include <cmath>
+#include <stack>
 #include <set>
+#include <map>
 typedef long long ll;
-typedef unsigned int uint;
 using namespace std;
+const ll MOD = 1000000007LL;
+
+map<ll, ll> prime_factor(ll n) {
+    map<ll, ll> ret;
+    for (ll i = 2; i * i <= n; i++) {
+        while (n % i == 0) {
+            ret[i]++;
+            n /= i;
+        }
+    }
+    if (n != 1) ret[n] = 1;
+    return ret;
+}
 
 int main() {
-    cin.sync_with_stdio(false);
-    cin.tie(0);
-
-    ll n, p, ans=1LL;
+    ll n, p;
     cin >> n >> p;
-    ll d = 2LL;
-    if (n >= 40LL) {
-        cout << 1 << endl;
-        return 0;
-    } else if (n == 1LL) {
-        cout << p << endl;
-        return 0;
-    }
-
-    while (p > 1) {
-        ll count = 0LL;
-        while(p % d == 0) {
-            count += 1LL;
-            p /= d;
-        }
-        if (count >= n) {
-            for (ll i = 0; i < count/n; i++) {
-                ans *= d;
-            }
-        }
-        d += 1LL;
-        if (d > 1000000LL) {
-            break;
+    auto mp = prime_factor(p);
+    ll ans = 1;
+    for (auto &itr : mp) {
+        while (itr.second >= n) {
+            itr.second -= n;
+            ans *= itr.first;
         }
     }
-
-    cout << ans << "\n";
+    cout << ans << endl;
     return 0;
 }
