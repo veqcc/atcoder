@@ -1,40 +1,44 @@
+#include <functional>
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
 #include <cstring>
 #include <string>
 #include <vector>
+#include <random>
+#include <bitset>
 #include <queue>
 #include <cmath>
 #include <stack>
 #include <set>
 #include <map>
 typedef long long ll;
-typedef unsigned int uint;
 using namespace std;
+const ll MOD = 1000000007LL;
+
+// 約数のvectorを返す
+vector<ll> divisor(ll n) {
+    vector<ll> ret;
+    for (ll i = 1; i * i <= n; i++) {
+        if (n % i == 0) {
+            ret.push_back(i);
+            if (i != n / i) ret.push_back(n / i);
+        }
+    }
+    return ret;
+}
 
 int main() {
-    cin.sync_with_stdio(false);
-    cin.tie(0);
-
     ll n;
     cin >> n;
-    ll m = (ll)sqrt((double)n);
+    auto div = divisor(n);
 
-    while (m > 0) {
-        if (n % m == 0) {
-            break;
-        }
-        m--;
+    int ans = 10;
+    for (ll d : div) {
+        int f = max(to_string(d).size(), to_string(n / d).size());
+        ans = min(ans, f);
     }
 
-    ll l = n / m;
-    int ans = 0;
-    while (l > 0) {
-        l /= 10;
-        ans++;
-    }
-
-    cout << ans << "\n";
+    cout << ans << endl;
     return 0;
 }
