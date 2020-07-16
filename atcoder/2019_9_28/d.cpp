@@ -34,17 +34,9 @@ map<ll, int> prime_factor(ll n) {
 }
 
 int main() {
-    cin.sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
     ll a, b;
     cin >> a >> b;
-
-    ll g = gcd(a, b);
-
-    map <ll, int> mp = prime_factor(g);
-
+    auto mp = prime_factor(gcd(a, b));
     cout << 1 + mp.size() << "\n";
     return 0;
 }
