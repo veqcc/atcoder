@@ -4,7 +4,7 @@
 using namespace std;
 
 // 計算量は O(NloglogN) らしい
-vector <bool> sieve(int n) { // sieve : ふるい
+vector<bool> sieve(int n) { // sieve : ふるい
     vector <bool> is_prime(n + 1, true);
     if (n >= 0) is_prime[0] = false;
     if (n >= 1) is_prime[1] = false;
@@ -23,7 +23,7 @@ vector <bool> sieve(int n) { // sieve : ふるい
 void AOJ_ALDS_1_C() {
     int n;
     cin >> n;
-    vector <bool> is_prime = sieve(100000005);
+    auto is_prime = sieve(100000005);
     int ans = 0;
     for (int i = 0; i < n; i++) {
         int m;
@@ -66,8 +66,8 @@ void yuki843() {
 }
 
 int main() {
-    // AOJ_ALDS_1_C();
+    AOJ_ALDS_1_C();
     // ACPC_2019_9_19_C();
-    yuki843();
+    // yuki843();
     return 0;
 }
