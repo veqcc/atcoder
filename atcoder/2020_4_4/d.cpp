@@ -17,25 +17,23 @@ using namespace std;
 const ll MOD = 1000000007LL;
 
 int main() {
-    cin.sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
     int k;
     cin >> k;
 
-    queue <ll> q;
-    for (ll i = 1; i < 10; i++) q.push(i);
-
+    priority_queue<ll, vector<ll>, greater<ll>> q;
+    q.push(1);
     while (--k) {
-        ll p = q.front();
+        ll v = q.top();
         q.pop();
 
-        if (p % 10 != 0) q.push(p * 10 + p % 10 - 1);
-        q.push(p * 10 + p % 10);
-        if (p % 10 != 9) q.push(p * 10 + p % 10 + 1);
+        if (v < 9) q.push(v + 1);
+
+        ll rem = v % 10;
+        if (rem > 0) q.push(v * 10 + rem - 1);
+        q.push(v * 10 + rem);
+        if (rem < 9) q.push(v * 10 + rem + 1);
     }
 
-    cout << q.front() << "\n";
+    cout << q.top() << endl;
     return 0;
 }
