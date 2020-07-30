@@ -15,56 +15,30 @@
 typedef long long ll;
 using namespace std;
 const ll MOD = 1000000007LL;
-typedef pair <ll, int> P;
 
 int main() {
-    cin.sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+    int x, y, a, b, c;
+    cin >> x >> y >> a >> b >> c;
 
-    int X, Y, a, b, c;
-    cin >> X >> Y >> a >> b >> c;
-
-    vector <ll> p(a), q(b), r(c);
+    vector<ll> p(a), q(b), r(c);
     for (int i = 0; i < a; i++) cin >> p[i];
     for (int i = 0; i < b; i++) cin >> q[i];
     for (int i = 0; i < c; i++) cin >> r[i];
 
-    priority_queue <P> Q;
-    for (int i = 0; i < a; i++) Q.push({p[i], 0});
-    for (int i = 0; i < b; i++) Q.push({q[i], 1});
-    for (int i = 0; i < c; i++) Q.push({r[i], 2});
+    sort(p.begin(), p.end(), greater<ll>());
+    sort(q.begin(), q.end(), greater<ll>());
+    sort(r.begin(), r.end(), greater<ll>());
 
-    int x = 0, y = 0, total = 0;
+    vector<ll> sum;
+    for (int i = 0; i < min(a, x); i++) sum.push_back(p[i]);
+    for (int i = 0; i < min(b, y); i++) sum.push_back(q[i]);
+    for (int i = 0; i < c; i++) sum.push_back(r[i]);
+
+    sort(sum.begin(), sum.end(), greater<ll>());
+
     ll ans = 0;
+    for (int i = 0; i < x + y; i++) ans += sum[i];
 
-    while (total < X + Y) {
-        P elm = Q.top();
-        Q.pop();
-
-        int val = elm.first;
-        int idx = elm.second;
-
-        if (idx == 0) {
-            if (x < X && total < X + Y) {
-                ans += val;
-                x++;
-                total++;
-            }
-        } else if (idx == 1) {
-            if (y < Y && total < X + Y) {
-                ans += val;
-                y++;
-                total++;
-            }
-        } else {
-            if (total < X + Y) {
-                ans += val;
-                total++;
-            }
-        }
-    }
-
-    cout << ans << "\n";
+    cout << ans << endl;
     return 0;
 }
