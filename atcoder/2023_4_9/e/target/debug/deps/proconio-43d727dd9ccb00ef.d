@@ -1,0 +1,11 @@
+/home/veqcc/work/atcoder/atcoder/2023_4_9/a/target/debug/deps/proconio-43d727dd9ccb00ef.rmeta: /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/lib.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/marker.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/mod.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/line.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/once.rs
+
+/home/veqcc/work/atcoder/atcoder/2023_4_9/a/target/debug/deps/libproconio-43d727dd9ccb00ef.rlib: /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/lib.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/marker.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/mod.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/line.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/once.rs
+
+/home/veqcc/work/atcoder/atcoder/2023_4_9/a/target/debug/deps/proconio-43d727dd9ccb00ef.d: /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/lib.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/marker.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/mod.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/line.rs /home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/once.rs
+
+/home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/lib.rs:
+/home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/marker.rs:
+/home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/mod.rs:
+/home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/line.rs:
+/home/veqcc/.cargo/registry/src/index.crates.io-6f17d22bba15001f/proconio-0.4.3/src/source/once.rs:
