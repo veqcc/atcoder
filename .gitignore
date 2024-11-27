@@ -7,3 +7,7 @@ a.out
 **/b
 **/c
 **/d
+
+# Rust
+**/Cargo.lock
+**/target/**
